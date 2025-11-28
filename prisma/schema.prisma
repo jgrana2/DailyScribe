@@ -18,6 +18,7 @@ model DailyNote {
   actionItems     String?
   taskCategory    String?
   taskDescription String?
+  taskSummary     String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }

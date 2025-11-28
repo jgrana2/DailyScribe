@@ -6,12 +6,14 @@
 
   let selectedCategory = $state('');
   let selectedDescription = $state('');
+  let taskSummary = $state('');
 
   // Sync with store
   $effect(() => {
     if ($taskClassification) {
       selectedCategory = $taskClassification.taskCategory;
       selectedDescription = $taskClassification.taskDescription;
+      taskSummary = $taskClassification.taskSummary;
     }
   });
 
@@ -57,6 +59,14 @@
           {/snippet}
         </Button>
       </div>
+
+      {#if taskSummary}
+        <div class="rounded-lg border border-primary/20 bg-primary/5 p-3" in:slide={{ duration: 200 }}>
+          <p class="text-sm font-medium text-foreground leading-relaxed">
+            {taskSummary}
+          </p>
+        </div>
+      {/if}
 
       {#if selectedCategory && selectedDescription}
         <div class="rounded-lg bg-muted/50 p-3 text-sm" in:slide={{ duration: 200 }}>

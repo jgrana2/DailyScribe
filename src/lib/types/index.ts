@@ -9,6 +9,7 @@ export interface DailyNote {
   actionItems: string | null;
   taskCategory: string | null;
   taskDescription: string | null;
+  taskSummary: string | null;
   createdAt: Date | string;
   updatedAt: Date | string;
 }
@@ -30,6 +31,7 @@ export interface ProcessedNote {
 export interface TaskClassification {
   taskCategory: string;
   taskDescription: string;
+  taskSummary: string;
 }
 
 export interface NoteFormData {
@@ -41,6 +43,7 @@ export interface NoteFormData {
   actionItems?: ActionItem[];
   taskCategory?: string;
   taskDescription?: string;
+  taskSummary?: string;
 }
 
 export type RecordingState = 'idle' | 'recording' | 'processing';

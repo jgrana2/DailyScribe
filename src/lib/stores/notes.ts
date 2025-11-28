@@ -184,6 +184,7 @@ export async function saveNote(date: Date, data: {
   actionItems?: ActionItem[];
   taskCategory?: string;
   taskDescription?: string;
+  taskSummary?: string;
 }): Promise<DailyNote | null> {
   isSaving.set(true);
   try {
@@ -281,7 +282,8 @@ export async function loadCurrentNote() {
     if (note.taskCategory && note.taskDescription) {
       taskClassification.set({
         taskCategory: note.taskCategory,
-        taskDescription: note.taskDescription
+        taskDescription: note.taskDescription,
+        taskSummary: note.taskSummary ?? 'Work completed for the day'
       });
     }
   } else {

@@ -20,6 +20,7 @@ const SYSTEM_PROMPT = `You are an AI assistant that classifies daily work activi
 Given structured daily notes (yesterday, today, blockers) and a prose summary, you must:
 1. Determine the PRIMARY Task Category that best describes the day's main work
 2. Select the most appropriate Task Description from that category's allowed values
+3. Generate a concise, task-oriented single-line summary of what was accomplished
 
 IMPORTANT: You MUST only choose from these exact categories and descriptions:
 
@@ -29,12 +30,15 @@ Rules:
 - Choose the category that represents the MAJORITY of the day's work
 - If multiple activities are present, pick the most significant one
 - If unsure, default to "Other" category with "Other Task Category" description
+- The taskSummary should be a brief, action-oriented sentence describing the actual work done (e.g., "Implemented user authentication and fixed login validation bug")
+- Keep the taskSummary under 100 characters
 - Your response must be valid JSON with exact string matches from the allowed values
 
 Respond ONLY with valid JSON in this exact format:
 {
   "taskCategory": "exact category name from the list",
-  "taskDescription": "exact description from that category's list"
+  "taskDescription": "exact description from that category's list",
+  "taskSummary": "brief task-oriented summary of what was done"
 }`;
 
 export interface ClassificationResult {
@@ -84,6 +88,7 @@ export async function classifyTask(input: ClassificationInput): Promise<Classifi
     // Validate the response
     const taskCategory = String(parsed.taskCategory || '');
     const taskDescription = String(parsed.taskDescription || '');
+    const taskSummary = String(parsed.taskSummary || 'Work completed for the day');
 
     if (!isValidClassification(taskCategory, taskDescription)) {
       console.warn('Invalid classification from AI, using fallback');
@@ -94,7 +99,8 @@ export async function classifyTask(input: ClassificationInput): Promise<Classifi
       success: true,
       data: {
         taskCategory,
-        taskDescription
+        taskDescription,
+        taskSummary
       }
     };
   } catch (error) {
@@ -154,7 +160,8 @@ function fallbackClassification(reason: string): ClassificationResult {
     success: true,
     data: {
       taskCategory: 'Other',
-      taskDescription: 'Other Task Category'
+      taskDescription: 'Other Task Category',
+      taskSummary: 'Work completed for the day'
     }
   };
 }

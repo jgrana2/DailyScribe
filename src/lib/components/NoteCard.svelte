@@ -61,12 +61,15 @@
             >
               {note.taskCategory}
             </span>
+            {#if note.taskDescription}
+              <span class="hidden sm:inline text-xs text-muted-foreground truncate max-w-[200px]">→ {note.taskDescription}</span>
+            {/if}
           {/if}
         </div>
 
-        {#if note.rawText}
+        {#if note.taskSummary || note.rawText}
           <p class="text-sm text-muted-foreground line-clamp-2">
-            {note.rawText.slice(0, 150)}{note.rawText.length > 150 ? '...' : ''}
+            {note.taskSummary ?? note.rawText?.slice(0, 150)}{!note.taskSummary && note.rawText && note.rawText.length > 150 ? '...' : ''}
           </p>
         {/if}
       </div>

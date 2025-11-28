@@ -70,7 +70,8 @@
       proseSummary: processed?.proseSummary,
       actionItems: processed?.actionItems,
       taskCategory: classification?.taskCategory,
-      taskDescription: classification?.taskDescription
+      taskDescription: classification?.taskDescription,
+      taskSummary: classification?.taskSummary
     });
 
     if (result) {

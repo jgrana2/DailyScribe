@@ -73,7 +73,8 @@ export const POST: RequestHandler = async ({ request }) => {
       proseSummary,
       actionItems,
       taskCategory,
-      taskDescription
+      taskDescription,
+      taskSummary
     } = body;
 
     if (!date || !rawText) {
@@ -97,7 +98,8 @@ export const POST: RequestHandler = async ({ request }) => {
         proseSummary,
         actionItems: actionItems ? JSON.stringify(actionItems) : null,
         taskCategory,
-        taskDescription
+        taskDescription,
+        taskSummary
       },
       update: {
         rawText,
@@ -107,7 +109,8 @@ export const POST: RequestHandler = async ({ request }) => {
         proseSummary,
         actionItems: actionItems ? JSON.stringify(actionItems) : null,
         taskCategory,
-        taskDescription
+        taskDescription,
+        taskSummary
       }
     });
 
