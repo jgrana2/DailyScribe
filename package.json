@@ -1,0 +1,39 @@
+{
+  "name": "daily-scrum-notes",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "^3.3.1",
+    "@sveltejs/kit": "^2.9.0",
+    "@sveltejs/vite-plugin-svelte": "^5.0.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^22.10.0",
+    "prisma": "^6.1.0",
+    "svelte": "^5.12.0",
+    "svelte-check": "^4.1.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.1.0",
+    "bits-ui": "^1.0.0-next.70",
+    "clsx": "^2.1.1",
+    "lucide-svelte": "^0.468.0",
+    "openai": "^4.76.0",
+    "tailwind-merge": "^2.6.0",
+    "tailwind-variants": "^0.3.0"
+  },
+  "type": "module"
+}

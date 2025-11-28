@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build
+.svelte-kit/
+build/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Database
+*.db
+*.db-journal
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Prisma
+prisma/migrations/
+
+# Logs
+*.log
+
