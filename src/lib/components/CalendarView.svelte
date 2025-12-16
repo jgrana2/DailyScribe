@@ -6,9 +6,10 @@
   interface Props {
     selectedDate: Date;
     onSelectDate: (date: Date) => void;
+    onMonthChange?: (year: number, month: number) => void;
   }
 
-  let { selectedDate, onSelectDate }: Props = $props();
+  let { selectedDate, onSelectDate, onMonthChange }: Props = $props();
 
   let viewDate = $state(new Date(selectedDate));
 
@@ -43,11 +44,13 @@
   function prevMonth() {
     viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1);
     loadMonthNotes();
+    onMonthChange?.(viewDate.getFullYear(), viewDate.getMonth() + 1);
   }
 
   function nextMonth() {
     viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1);
     loadMonthNotes();
+    onMonthChange?.(viewDate.getFullYear(), viewDate.getMonth() + 1);
   }
 
   function selectDate(date: Date) {

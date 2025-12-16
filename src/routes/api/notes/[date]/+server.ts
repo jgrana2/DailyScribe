@@ -80,7 +80,7 @@ export const PUT: RequestHandler = async ({ params, request }) => {
 
 export const DELETE: RequestHandler = async ({ params }) => {
   try {
-    const date = getStartOfDay(new Date(params.date));
+    const date = getStartOfDay(parseISODate(params.date));
     console.log(`Attempting to delete note for date: ${date.toISOString()} (param: ${params.date})`);
 
     try {

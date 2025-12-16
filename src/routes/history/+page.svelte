@@ -6,12 +6,14 @@
   import NoteCard from '$lib/components/NoteCard.svelte';
   import Button from '$lib/components/ui/Button.svelte';
   import { notesCache, fetchNotesForMonth, currentDate, deleteNote } from '$lib/stores/notes';
-  import { toISODateString, formatDate, parseISODate } from '$lib/utils';
+  import { toISODateString, formatDate, parseISODate, generateTasksCsv, downloadBlob } from '$lib/utils';
   import type { DailyNote } from '$lib/types';
 
   let selectedDate = $state(new Date());
   let viewMode: 'list' | 'calendar' = $state('calendar');
   let isLoading = $state(true);
+  let currentMonth = $state(new Date().getMonth() + 1);
+  let currentYear = $state(new Date().getFullYear());
 
   // Get notes sorted by date (newest first)
   let sortedNotes = $derived.by(() => {
@@ -48,10 +50,29 @@
   }
 
   async function handleDeleteNote(note: DailyNote) {
-    const success = await deleteNote(new Date(note.date));
+    const date = typeof note.date === 'string' ? parseISODate(note.date) : note.date;
+    const success = await deleteNote(date);
     if (!success) {
       alert('Failed to delete note');
     }
+  }
+
+  function handleExportCsv() {
+    // Filter notes for the current month
+    const notesForMonth = Array.from($notesCache.values()).filter(note => {
+      const noteDate = typeof note.date === 'string' ? parseISODate(note.date) : note.date;
+      return noteDate.getMonth() + 1 === currentMonth && noteDate.getFullYear() === currentYear;
+    });
+
+    if (notesForMonth.length === 0) {
+      alert('No tasks to export for this month.');
+      return;
+    }
+
+    const csvBlob = generateTasksCsv(notesForMonth);
+    const monthName = new Date(currentYear, currentMonth - 1).toLocaleString('en-US', { month: 'long' });
+    const filename = `tasks-${monthName.toLowerCase()}-${currentYear}.csv`;
+    downloadBlob(csvBlob, filename);
   }
 </script>
 
@@ -70,6 +91,16 @@
     </div>
 
     <div class="flex items-center gap-2">
+      <button
+        class="inline-flex items-center gap-1.5 rounded-lg border border-input bg-white px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted/50"
+        onclick={handleExportCsv}
+        title="Export tasks to CSV"
+      >
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <span class="hidden sm:inline">Export CSV</span>
+      </button>
       <div class="flex rounded-lg border border-input bg-white p-1">
         <button
           class="rounded-md px-3 py-1.5 text-sm font-medium transition-colors {viewMode === 'calendar'
@@ -102,7 +133,11 @@
     <div class="grid gap-6 lg:grid-cols-2" in:fade={{ duration: 200 }}>
       <!-- Calendar -->
       <div>
-        <CalendarView {selectedDate} onSelectDate={handleSelectDate} />
+        <CalendarView 
+          {selectedDate} 
+          onSelectDate={handleSelectDate} 
+          onMonthChange={(year, month) => { currentYear = year; currentMonth = month; }}
+        />
       </div>
 
       <!-- Selected Day Details -->

@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import type { DailyNote } from '$lib/types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -51,5 +52,60 @@ export function getStartOfDay(date: Date = new Date()): Date {
   const d = new Date(date);
   d.setHours(0, 0, 0, 0);
   return d;
+}
+
+/**
+ * Escapes a value for CSV format
+ */
+function escapeCsvField(value: string | null | undefined): string {
+  if (value == null) return '';
+  const str = String(value);
+  // If the field contains comma, quote, or newline, wrap in quotes and escape existing quotes
+  if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  return str;
+}
+
+/**
+ * Generates a CSV Blob from an array of DailyNote objects
+ * Columns: Date, Task Category, Task Description, Task Summary
+ */
+export function generateTasksCsv(notes: DailyNote[]): Blob {
+  const headers = ['Date', 'Task Category', 'Task Description', 'Task Summary'];
+  
+  // Sort notes by date (oldest first for chronological order in CSV)
+  const sortedNotes = [...notes].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
+  
+  const rows = sortedNotes.map(note => {
+    const date = typeof note.date === 'string' ? parseISODate(note.date) : note.date;
+    const formattedDate = toISODateString(date);
+    
+    return [
+      escapeCsvField(formattedDate),
+      escapeCsvField(note.taskCategory),
+      escapeCsvField(note.taskDescription),
+      escapeCsvField(note.taskSummary)
+    ].join(',');
+  });
+  
+  const csvContent = [headers.join(','), ...rows].join('\n');
+  return new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+}
+
+/**
+ * Triggers a browser download of a Blob with a given filename
+ */
+export function downloadBlob(blob: Blob, filename: string): void {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }
 
