@@ -4,9 +4,9 @@
   import { slide, fade } from 'svelte/transition';
 
   const sections = [
-    { key: 'yesterday', title: 'Yesterday', icon: '📋', color: 'bg-blue-50 border-blue-200' },
-    { key: 'today', title: 'Today', icon: '🎯', color: 'bg-green-50 border-green-200' },
-    { key: 'blockers', title: 'Blockers', icon: '🚧', color: 'bg-amber-50 border-amber-200' }
+    { key: 'yesterday', title: 'Yesterday', icon: '/calendar-outline.svg', color: 'bg-blue-50 border-blue-200' },
+    { key: 'today', title: 'Today', icon: '/checkmark-done-outline.svg', color: 'bg-green-50 border-green-200' },
+    { key: 'blockers', title: 'Blockers', icon: '/ban-outline.svg', color: 'bg-amber-50 border-amber-200' }
   ] as const;
 </script>
 
@@ -22,7 +22,7 @@
           in:fade={{ delay: i * 100, duration: 200 }}
         >
           <h3 class="mb-3 flex items-center gap-2 font-medium text-foreground">
-            <span>{section.icon}</span>
+            <img src="{section.icon}" alt="{section.title} icon" class="w-5 h-5" />
             <span>{section.title}</span>
           </h3>
           {#if items && items.length > 0}
@@ -47,7 +47,6 @@
     {#if $processedNote.proseSummary}
       <Card class="p-4 bg-gradient-to-br from-slate-50 to-white">
         <h3 class="mb-3 flex items-center gap-2 font-medium text-foreground">
-          <span>📝</span>
           <span>Meeting Summary</span>
         </h3>
         <div class="prose prose-sm max-w-none text-foreground/80">
@@ -59,4 +58,3 @@
     {/if}
   </div>
 {/if}
-

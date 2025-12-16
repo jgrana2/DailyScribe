@@ -22,7 +22,7 @@
   <div in:slide={{ duration: 300 }}>
     <Card class="p-4 animate-slide-up">
       <h3 class="mb-3 flex items-center gap-2 font-medium text-foreground">
-        <span>✅</span>
+        <img src="/checkmark-outline.svg" alt="Action Items icon" class="w-5 h-5" />
         <span>Action Items</span>
         <span class="ml-auto text-sm text-muted-foreground">
           {$processedNote.actionItems.filter(i => i.completed).length}/{$processedNote.actionItems.length}
@@ -52,4 +52,3 @@
     </Card>
   </div>
 {/if}
-
