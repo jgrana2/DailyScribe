@@ -16,11 +16,9 @@
   <header class="sticky top-0 z-40 border-b border-border/50 bg-white/80 backdrop-blur-lg">
     <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-16 items-center justify-between">
-        <a href="/" class="flex items-center gap-3 group">
-          <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm transition-transform duration-200 group-hover:scale-105">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
+        <a href="/" class="flex items-center gap-2 group">
+          <div class="flex h-9 w-9 items-center justify-center rounded-xl text-primary-foreground">
+            <img src="/logo.png" alt="Daily Scribe Logo" class="h-9" />
           </div>
           <span class="text-lg font-semibold text-foreground hidden sm:block">Daily Scribe</span>
         </a>
@@ -72,4 +70,3 @@
     </div>
   </footer>
 </div>
-
